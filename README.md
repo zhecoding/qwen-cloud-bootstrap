@@ -34,6 +34,8 @@ vastai/base-image:cuda-12.8.1-cudnn-devel-ubuntu22.04-py310
 
 不要选择名称中带 `runtime` 的 CUDA 镜像，因为现场编译 `llama.cpp` 需要 `nvcc`。也不需要选择 PyTorch 或 ComfyUI 镜像。
 
+Vast.ai 的官方 **Llama.cpp** 应用模板也能启动 GGUF 模型，但不推荐用于本项目。该模板自带并自动管理一套标准 `llama-server`，而本项目需要为 FastMTP 应用专用补丁并编译固定版本；它默认还会把外部端口 `8000` 映射到内部端口 `18000`。使用它仍需停用内置服务、重新编译并调整端口，因此不会比上述基础 CUDA 镜像更省事。
+
 ### 2. 模板和实例设置
 
 建议设置如下：
@@ -54,6 +56,8 @@ vastai/base-image:cuda-12.8.1-cudnn-devel-ubuntu22.04-py310
 
 端口使用 `8000`，避免与基础镜像中的 Jupyter `8080` 冲突。
 
+[此处](https://cloud.vast.ai/create/?gpuModelNames=rtx5090&instanceDiskSizeMin=49.99999999999996&machineMegabitDownloadMin=1000&machineMegabitUploadMin=1000&machinePortsOpenMin=9&offerGpuNumMax=1&offerGpuNumMin=1&priceInstanceTerabyteDownloadMax=5&priceInstanceTerabyteUploadMax=5)为已包含筛选条件的搜索链接。
+
 ### 3. 启动实例并打开终端
 
 等待实例状态变成 Running。然后任选一种方式进入终端：
@@ -73,12 +77,12 @@ nvcc --version
 ### 4. 下载并启动
 
 ```bash
-git clone https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPOSITORY.git /workspace/qwen-cloud
+git clone https://github.com/zhecoding/qwen-cloud-bootstrap.git /workspace/qwen-cloud
 cd /workspace/qwen-cloud
 bash bootstrap.sh
 ```
 
-将第一行替换为你手动上传后的仓库地址。私有仓库需要自行配置访问凭据。
+如果以后把仓库改为私有仓库，需要自行配置访问凭据。
 
 脚本会依次检查环境、编译 `llama.cpp`、下载约 22 GB 模型、校验文件、启动服务并执行测试。根据主机 CPU 和网络速度，第一次运行通常需要数分钟到二十分钟左右。
 
@@ -150,7 +154,7 @@ nvcc --version
 ### 3. 下载并启动
 
 ```bash
-git clone https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPOSITORY.git /workspace/qwen-cloud
+git clone https://github.com/zhecoding/qwen-cloud-bootstrap.git /workspace/qwen-cloud
 cd /workspace/qwen-cloud
 bash bootstrap.sh
 ```
